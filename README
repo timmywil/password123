@@ -67,7 +67,8 @@ $('input:password').password123({
     // (meaning delete it when element focused)
     placeholder: true,
     
-    // You can mask the placeholder if you like
+    // You can mask the placeholder 
+    // or default value if you like
     maskPlaceholder: false
     
 });
