@@ -41,8 +41,17 @@
         $fields, 
         last, 
         opts = {
+        
+            // You can use any html character code or
+            // plain text character
             character: "&#8226;",
+            
+            // This is the delay for when the last
+            // character will change
             delay: 2000,
+            
+            // Use any prefix you like for the new
+            // field ids, but they will always be zero-indexed
             prefix: "iField"
         };
 
