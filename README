@@ -35,3 +35,9 @@ Release History
 Usage
 
 $('input:password').password123();
+
+If you'd like there to be default values in the fields, 
+just do it as you normally would, in your password field....
+<input type="password" value="password"/>
+
+This way you can have default values specific to certain elements.

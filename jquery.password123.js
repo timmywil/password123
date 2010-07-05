@@ -90,7 +90,7 @@
     if ($.attrFn) $.attrFn['textchange'] = true;
 
     // Gets the current cursor position in a textfield
-    // to determine where to delete a character.
+    // to determine where to delete/update a character.
     function getCursorPosition(field) {
         if (field != null) {
             // IE
@@ -139,7 +139,8 @@
 
             $('<input type="text"/>').attr({
                 'class': field.attr('class'),
-                'id': field_id
+                'id': field_id,
+                'value': field.attr('value')
             }).insertAfter(field);
 
             fields.push(document.getElementById(field_id));
@@ -236,8 +237,15 @@
         $fields = replaceFields(this);
         
         // Bind textchange to the fields with
-        // the letterChange function and
-        // return jQuery
-        return $fields.textchange(letterChange);
+        // the letterChange function
+        $fields.textchange(letterChange);
+        
+        // Trigger keyup rather than textchange
+        // in case there were default values
+        // already in the fields
+        $fields.keyup();
+        
+        // Return the new fields for chaining
+        return $fields;
     };
 })(jQuery, this, document);
