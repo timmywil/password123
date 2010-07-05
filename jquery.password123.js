@@ -34,11 +34,8 @@
 
 (function ($, window, document, undefined) {
 
-    // Convenient shortcuts.
-    var aps = Array.prototype.slice,
-
-        // Method / object references.
-        $fields, 
+    // Method / object references.
+    var $fields, 
         last, 
         opts = {
         
