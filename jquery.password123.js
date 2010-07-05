@@ -80,7 +80,7 @@
                 encodedCharacter = $('<div>'+opts.character+'</div>').text();
             if ($element.val() !== $element.data('lastValue')) {
                 // Check if something larger than one letter was pasted into the field
-                if (v.indexOf(encodedCharacter) === -1 && v.length > 1) {
+                if (v.length > 1 && v.indexOf(encodedCharacter) === -1) {
                     // If so, we need to save it before it disappears,
                     // but continue with triggering the field change
                     // by taking the last letter off
