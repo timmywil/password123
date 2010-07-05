@@ -1,5 +1,5 @@
 /*!
- * jQuery password123: iPhone Style Passwords Plugin - v1.0 - 7/4/2010
+ * jQuery password123: iPhone Style Passwords Plugin - v1.1 - 7/5/2010
  * http://timmywillison.com/samples/password123/password123.html
  * 
  * Copyright (c) 2010 timmy willison
@@ -7,12 +7,12 @@
  * http://timmywillison.com/licence/
  */
 
-// *Version: 1.0, Last updated: 7/4/2010*
+// *Version: 1.1, Last updated: 7/5/2010*
 // 
 // Demo         - http://timmywillison.com/samples/password123/
 // GitHub       - http://github.com/timmywil/jquery-password123
-// Source       - http://github.com/timmywil/jquery-password123/raw/master/jquery.password123.js (9kb)
-// (Minified)   - http://github.com/timmywil/jquery-password123/raw/master/jquery.password123.min.js (3kb)
+// Source       - http://github.com/timmywil/jquery-password123/raw/master/jquery.password123.js (11.6kb)
+// (Minified)   - http://github.com/timmywil/jquery-password123/raw/master/jquery.password123.min.js (3.4kb)
 // 
 // License
 // 
@@ -30,7 +30,10 @@
 // 
 // Release History
 // 
+// 1.1   - (7/5/2010) Add Placeholder functionality
 // 1.0   - (7/4/2010) Initial release
+//
+// See README for usage and placeholder explanation (it's easy)
 
 (function ($, window, document, undefined) {
 
@@ -49,7 +52,15 @@
             
             // Use any prefix you like for the new
             // field ids, but they will always be zero-indexed
-            prefix: "iField"
+            prefix: "iField",
+            
+            // Treat the default value like a placeholder
+            // (meaning delete it when first focused)
+            placeholder: true,
+            
+            // You can mask the placeholder 
+            // or default value if you like
+            maskPlaceholder: false
         };
 
     // =========================================== 
@@ -140,23 +151,31 @@
         var fields = [];
         $(f).each(function (i, tem) {
 
-            var field = $(tem),
-                field_id = opts.prefix + i;
-
+            var $field = $(tem),
+                field_id = opts.prefix + i,
+                place = $field.attr('placeholder') || $field.attr('value');
+            
+            // The main field
             $('<input type="text"/>').attr({
-                'class': field.attr('class'),
+                'class': $field.attr('class'),
                 'id': field_id,
-                'value': field.attr('value')
-            }).insertAfter(field);
+                'value': place
+            }).insertAfter($field)
+                // Add placeholder data directly to the element
+                .data('placeholder', place);
 
             fields.push(document.getElementById(field_id));
-
+            
+            // The hidden field that will get sent with the form
             $('<input type="hidden"/>').attr({
-                'name': field.attr('name'),
-                'id': field.attr('id'),
-                'class': field.attr('class')
-            }).replaceAll(field);
-
+                'name': $field.attr('name'),
+                'id': $field.attr('id'),
+                'class': $field.attr('class')
+            }).replaceAll($field)
+                // Fill starting value with placeholder 
+                // for later comparisons
+                .val(place);
+            
         });
         return $(fields).data('value', '');
     };
@@ -167,11 +186,13 @@
         var $field = $(this);
         var fv = $field.val();
         if (fv.length > $field.data('value').length) {
-        
+            
+            // Apply fieldChance as normal
             $field.data('value', fieldChange($field));
 
         } else if (fv.length < $field.data('value').length) {
-
+            
+            // Clear the timeout for the last character
             window.clearTimeout(last);
 
             var hidden = $field.prev('input'),
@@ -181,11 +202,14 @@
             if (fv.length < old.length - 1) newVal = old.substr(0, fv.length);
             else {
                 var cp = getCursorPosition($field[0]);
+                // Create the new value with the correct
+                // character deleted
                 newVal = old.length > cp + 1 && cp > -1 
                     ? old.slice(0, cp).concat(old.slice(cp + 1)) 
                     : old.slice(0, cp);
             }
-
+            
+            // Update data and the hidden input
             $field.data('value', fv).prev('input').val(newVal);
         }
     }
@@ -194,13 +218,16 @@
     // sets the timeout for the last char,
     // and returns the new value to set to field.data
     function fieldChange($field) {
+    
+        // Clear the timeout for the last character
         window.clearTimeout(last);
         var fv = $field.val(),
             len = fv.length,
             hidden = $field.prev('input'),
-            encodedCharacter = $('<div>'+opts.character+'</div>').text(),
             old = hidden.val(),
             cp = getCursorPosition($field[0]),
+            // HTML encode the character
+            encodedCharacter = $('<div>'+opts.character+'</div>').text(),
             newVal;
         
         // Update the hidden value with the correct value
@@ -208,28 +235,64 @@
         newVal = old.length > cp + 1 && cp > -1 
             ? old.substr(0, cp-1) + fv.charAt(cp-1) + old.substr(cp-1)
             : old + fv.charAt(len - 1);
-        
         hidden.val(newVal);
         
         if (len > 1) {
+        
+            // Loop through and change all characters
             for (var i = 0; i < len - 1; i++) {
                 fv = fv.replace(fv.charAt(i), encodedCharacter);
             }
+            
+            // Update the field
             $field.val(fv);
         }
         if (len > 0) {
+        
+            // Set the timeout for the last character
             last = setTimeout(function () {
                 cp = getCursorPosition($field[0]);
                 fv = $field.val();
                 fv = fv.replace(fv.charAt(len - 1), encodedCharacter);
                 $field.val(fv).data('value', fv);
+                
+                // Reset cursor position to what it was if not at end
                 if (cp != len)
                     setCursorPosition($field[0], cp);
             }, opts.delay);
         }
+        
+        // Reset cursor position to what it was if not at end
         if (cp != len)
             setCursorPosition($field[0], cp);
         return fv;
+    }
+    
+    // Placeholder functionality
+    function bindPlaceholder ($fields) {
+        $fields.focus(function () {
+            var $f = $(this),
+                hidden = $f.prev('input'),
+                place = $f.data('placeholder');
+            // Compare the hidden value with the placeholder value
+            if (place != undefined && hidden.val() === place) {
+                $f.val('');
+                hidden.val('');
+            }
+        }).blur(function () {
+            var $f = $(this),
+                place = $f.data('placeholder');
+            // If it's empty, put the placeholder in as the value
+            if (place != undefined && $f.val() === '') {
+                $f.val(place).prev('input').val(place).end();
+                // Mask the placeholder if needed
+                if (opts.maskPlaceholder)
+                    $f.keyup();
+            }
+        });
+        // Mask the placeholder if needed
+        if (opts.maskPlaceholder)
+            $fields.keyup();
     }
     
     // Extend jQuery
@@ -246,12 +309,17 @@
         // the letterChange function
         $fields.textchange(letterChange);
         
-        // Trigger keyup rather than textchange
-        // in case there were default values
-        // already in the fields
-        $fields.keyup();
+        // Add placeholder stuff
+        if (opts.placeholder)
+            bindPlaceholder($fields);
+        
+        // or just mask the default value if needed
+        else if (opts.maskPlaceholder)
+            $fields.keyup();
         
         // Return the new fields for chaining
+        // since the hidden fields previously
+        // selected are no longer there
         return $fields;
     };
 })(jQuery, this, document);

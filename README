@@ -1,5 +1,5 @@
 /*!
- * jQuery password123: iPhone Style Passwords Plugin - v1.0 - 7/4/2010
+ * jQuery password123: iPhone Style Passwords Plugin - v1.1 - 7/5/2010
  * http://timmywillison.com/samples/password123/password123.html
  * 
  * Copyright (c) 2010 timmy willison
@@ -7,12 +7,12 @@
  * http://timmywillison.com/licence/
  */
 
-*Version: 1.0, Last updated: 7/4/2010*
+*Version: 1.1, Last updated: 7/5/2010*
  
 Demo         - http://timmywillison.com/samples/password123/
 GitHub       - http://github.com/timmywil/jquery-password123
-Source       - http://github.com/timmywil/jquery-password123/raw/master/jquery.password123.js (9kb)
-(Minified)   - http://github.com/timmywil/jquery-password123/raw/master/jquery.password123.min.js (3kb)
+Source       - http://github.com/timmywil/jquery-password123/raw/master/jquery.password123.js (11.6kb)
+(Minified)   - http://github.com/timmywil/jquery-password123/raw/master/jquery.password123.min.js (3.4kb)
 
 License
 
@@ -30,17 +30,21 @@ Browsers Tested - Internet Explorer 6-8, Firefox 2-3.7, Safari 3-5,
 
 Release History
 
+1.1   - (7/5/2010) Add Placeholder functionality
 1.0   - (7/4/2010) Initial release
 
 Usage
 
 $('input:password').password123();
 
-If you'd like there to be default values in the fields, 
+If you'd like there to be default values or placeholders in the fields, 
 just do it as you normally would, in your password field....
 <input type="password" value="password"/>
 
-This way you can have default values specific to certain elements.
+OR for the HTML5 enhanced...
+<input type="password" placeholder="password">
+
+This way you can have default values and placeholders specific to certain elements.
 
 Options
 
@@ -48,7 +52,7 @@ $('input:password').password123({
                 
     // You can use any html character code or
     // plain text character
-    character: "&#8226;"
+    character: "&#8226;",
     
     // This is the delay for when the last
     // character will change
@@ -56,6 +60,14 @@ $('input:password').password123({
     
     // Use any prefix you like for the new
     // field ids, but they will always be zero-indexed
-    prefix: "iField"
+    prefix: "iField",
+    
+    // Treat the default value entered
+    // in the placeholder or value attribute like a placeholder
+    // (meaning delete it when element focused)
+    placeholder: true,
+    
+    // You can mask the placeholder if you like
+    maskPlaceholder: false
     
 });
