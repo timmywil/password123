@@ -9,7 +9,7 @@
 
 // *Version: 1.0, Last updated: 7/4/2010*
 // 
-// Demo         - http://timmywillison.com/samples/password123/password123.html
+// Demo         - http://timmywillison.com/samples/password123/
 // GitHub       - http://github.com/timmywil/jquery-password123
 // Source       - http://github.com/timmywil/jquery-password123/raw/master/jquery.password123.js (9kb)
 // (Minified)   - http://github.com/timmywil/jquery-password123/raw/master/jquery.password123.min.js (3kb)
