@@ -16,7 +16,7 @@
 // 
 // License
 // 
-// Copyright (c) 2010 "Cowboy" Ben Alman,
+// Copyright (c) 2010 timmy willison,
 // Dual licensed under the MIT and GPL licenses.
 // http://timmywillison.com/license/
 // 
@@ -30,7 +30,7 @@
 // 
 // Release History
 // 
-// 1.0   - (6/13/2010) Initial release
+// 1.0   - (7/4/2010) Initial release
 
 (function ($, window, document, undefined) {
 
