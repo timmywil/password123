@@ -62,10 +62,13 @@ $('input:password').password123({
     // field ids, but they will always be zero-indexed
     prefix: "iField",
     
-    // Treat the default value entered
-    // in the placeholder or value attribute like a placeholder
-    // (meaning delete it when element focused)
+    // Treat the default value like a placeholder
+    // (meaning delete it when first focused)
     placeholder: true,
+    
+    // With this classname, you can set placeholder
+    // specific styles in your own css
+    placeholderClass: 'place',
     
     // You can mask the placeholder 
     // or default value if you like

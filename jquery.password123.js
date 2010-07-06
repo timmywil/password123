@@ -58,6 +58,10 @@
             // (meaning delete it when first focused)
             placeholder: true,
             
+            // With this classname, you can set placeholder
+            // specific styles in your own css
+            placeholderClass: 'place',
+            
             // You can mask the placeholder 
             // or default value if you like
             maskPlaceholder: false
@@ -157,7 +161,7 @@
             
             // The main field
             $('<input type="text"/>').attr({
-                'class': $field.attr('class'),
+                'class': opts.placeholder ? $field.attr('class') + ' ' + opts.placeholderClass : $field.attr('class'),
                 'id': field_id,
                 'value': place
             }).insertAfter($field)
@@ -274,22 +278,26 @@
             var $f = $(this),
                 hidden = $f.prev('input'),
                 place = $f.data('placeholder');
+                
             // Compare the hidden value with the placeholder value
             if (place != undefined && hidden.val() === place) {
-                $f.val('');
+                $f.val('').removeClass(opts.placeholderClass);
                 hidden.val('');
             }
         }).blur(function () {
             var $f = $(this),
                 place = $f.data('placeholder');
+                
             // If it's empty, put the placeholder in as the value
             if (place != undefined && $f.val() === '') {
-                $f.val(place).prev('input').val(place).end();
+                $f.val(place).addClass(opts.placeholderClass).prev('input').val(place).end();
+                
                 // Mask the placeholder if needed
                 if (opts.maskPlaceholder)
                     $f.keyup();
             }
         });
+        
         // Mask the placeholder if needed
         if (opts.maskPlaceholder)
             $fields.keyup();
