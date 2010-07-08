@@ -1,6 +1,6 @@
 /*!
  * jQuery password123: iPhone Style Passwords Plugin - v1.1 - 7/5/2010
- * http://timmywillison.com/samples/password123/password123.html
+ * http://timmywillison.com/samples/password123/
  * 
  * Copyright (c) 2010 timmy willison
  * Dual licensed under the MIT and GPL licences.
@@ -129,7 +129,7 @@
     }
     
     // Sets the cursor position to a previous state
-    // if the field was updated somewhere in the middle
+    // if the field was updated somewhere in the middle.
     function setCursorPosition(field, pos) {
         if (field != null) {
             // IE
@@ -150,7 +150,8 @@
     }
     
     // Replaces the password field with a hidden field
-    // and adds the new visible text field
+    // and adds the new visible text field.
+    // Returns the new text fields.
     function replaceFields(f) {
         var fields = [];
         $(f).each(function (i, tem) {
@@ -305,7 +306,7 @@
     
     // Extend jQuery
     $.fn.password123 = function (settings) {
-    
+        
         // Add in settings to options
         opts = jQuery.extend(opts, settings);
         
