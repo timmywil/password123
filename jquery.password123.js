@@ -38,15 +38,15 @@
 (function ($, window, document, undefined) {
 
     // Method / object references.
-    var $fields, 
-        last, 
+    var $fields,
+        last,
         opts = {
         
             // You can use any html character code or
             // plain text character
             character: "&#8226;",
             
-            // This is the delay for when the last
+            // This is the delay(ms) for when the last
             // character will change
             delay: 2000,
             
