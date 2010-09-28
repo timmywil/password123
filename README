@@ -1,5 +1,5 @@
 /*!
- * jQuery password123: iPhone Style Passwords Plugin - v1.1 - 7/5/2010
+ * jQuery password123: iPhone Style Passwords Plugin - v1.2 - 9/28/2010
  * http://timmywillison.com/samples/password123/
  * 
  * Copyright (c) 2010 timmy willison
@@ -7,7 +7,7 @@
  * http://timmywillison.com/licence/
  */
 
-*Version: 1.1, Last updated: 7/5/2010*
+*Version: 1.2, Last updated: 9/28/2010*
  
 Demo         - http://timmywillison.com/samples/password123/
 GitHub       - http://github.com/timmywil/password123
@@ -30,23 +30,27 @@ Browsers Tested - Internet Explorer 6-8, Firefox 2-3.7, Safari 3-5,
 
 Release History
 
+1.2   - (9/28/2010) Placeholders changed to only work with HTML5 placeholder attribute, value now reserved for actual values
 1.1   - (7/5/2010) Add Placeholder functionality
 1.0   - (7/4/2010) Initial release
 
-Usage
+<h1>Usage</h1>
 
+<pre>
 $('input:password').password123();
+<pre>
 
-If you'd like there to be default values or placeholders in the fields, 
-just do it as you normally would, in your password field....
-<input type="password" value="password"/>
+<h3>Placeholders</h3>
+For placeholders, just use the HTML5 placeholder attribute:
 
-OR for the HTML5 enhanced...
+<pre>
 <input type="password" placeholder="password">
+</pre>
 
-This way you can have default values and placeholders specific to certain elements.
+This will work in all browsers and you can keep placeholders specific to certain elements.
 
-Options
+<br/>
+<h3>Options</h3>
 
 $('input:password').password123({
                 
@@ -62,16 +66,14 @@ $('input:password').password123({
     // field ids, but they will always be zero-indexed
     prefix: "iField",
     
-    // Treat the default value like a placeholder
-    // (meaning delete it when first focused)
+    // Enable the override of the placeholder attribute
     placeholder: true,
     
     // With this classname, you can set placeholder
     // specific styles in your own css
     placeholderClass: 'place',
     
-    // You can mask the placeholder 
-    // or default value if you like
+    // You can mask the placeholder
     maskPlaceholder: false
     
 });

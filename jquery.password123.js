@@ -1,5 +1,5 @@
 /*!
- * jQuery password123: iPhone Style Passwords Plugin - v1.1 - 7/5/2010
+ * jQuery password123: iPhone Style Passwords Plugin - v1.2 - 9/28/2010
  * http://timmywillison.com/samples/password123/
  * 
  * Copyright (c) 2010 timmy willison
@@ -7,7 +7,7 @@
  * http://timmywillison.com/licence/
  */
 
-// *Version: 1.1, Last updated: 7/5/2010*
+// *Version: 1.2, Last updated: 9/28/2010*
 // 
 // Demo         - http://timmywillison.com/samples/password123/
 // GitHub       - http://github.com/timmywil/password123
@@ -18,7 +18,7 @@
 // 
 // Copyright (c) 2010 timmy willison,
 // Dual licensed under the MIT and GPL licenses.
-// http://timmywillison.com/license/
+// http://timmywillison.com/licence/
 // 
 // Support and Testing
 // 
@@ -30,6 +30,7 @@
 // 
 // Release History
 // 
+// 1.2   - (9/28/2010) Placeholders changed to only work with HTML5 placeholder attribute, value now reserved for actual values
 // 1.1   - (7/5/2010) Add Placeholder functionality
 // 1.0   - (7/4/2010) Initial release
 //
@@ -54,16 +55,14 @@
             // field ids, but they will always be zero-indexed
             prefix: "iField",
             
-            // Treat the default value like a placeholder
-            // (meaning delete it when first focused)
+            // Enable the override of the placeholder attribute
             placeholder: true,
             
             // With this classname, you can set placeholder
             // specific styles in your own css
             placeholderClass: 'place',
             
-            // You can mask the placeholder 
-            // or default value if you like
+            // You can mask the placeholder
             maskPlaceholder: false
         };
 
@@ -156,16 +155,19 @@
         var fields = [];
         $(f).each(function (i, tem) {
 
-            var $field = $(tem),
+            var $field   = $(tem),
                 field_id = opts.prefix + i,
-                place = $field.attr('placeholder') || $field.attr('value');
+                place    = $field.attr('placeholder') || undefined,
+                value    = $field.attr('value') || place || '';
             
             // The main field
             $('<input type="text"/>').attr({
-                'class': opts.placeholder ? $field.attr('class') + ' ' + opts.placeholderClass : $field.attr('class'),
+                'class': opts.placeholder && place !== undefined ? $field.attr('class') + ' ' + opts.placeholderClass : $field.attr('class'),
                 'id': field_id,
-                'value': place
+                'value': value
             }).insertAfter($field)
+                // If value was set (tho rare on password fields), fill it in correctly
+                .data('value', $field.attr('value') || '')
                 // Add placeholder data directly to the element
                 .data('placeholder', place);
 
@@ -179,17 +181,18 @@
             }).replaceAll($field)
                 // Fill starting value with placeholder 
                 // for later comparisons
-                .val(place);
+                .val(value);
             
         });
-        return $(fields).data('value', '');
+        return $(fields);
     };
 
     // Calls for the necessary adjustments
     // when a field is changed
     function letterChange() {
-        var $field = $(this);
-        var fv = $field.val();
+        var $field = $(this),
+            fv     = $field.val();
+
         if (fv.length > $field.data('value').length) {
             
             // Apply fieldChance as normal
@@ -201,7 +204,7 @@
             window.clearTimeout(last);
 
             var hidden = $field.prev('input'),
-                old = hidden.val(),
+                old    = hidden.val(),
                 newVal;
 
             if (fv.length < old.length - 1) newVal = old.substr(0, fv.length);
@@ -226,11 +229,11 @@
     
         // Clear the timeout for the last character
         window.clearTimeout(last);
-        var fv = $field.val(),
-            len = fv.length,
-            hidden = $field.prev('input'),
-            old = hidden.val(),
-            cp = getCursorPosition($field[0]),
+        var fv               = $field.val(),
+            len              = fv.length,
+            hidden           = $field.prev('input'),
+            old              = hidden.val(),
+            cp               = getCursorPosition($field[0]),
             // HTML encode the character
             encodedCharacter = $('<div>'+opts.character+'</div>').text(),
             newVal;
@@ -275,30 +278,35 @@
     
     // Placeholder functionality
     function bindPlaceholder ($fields) {
-        $fields.focus(function () {
-            var $f = $(this),
+        
+        $fields.each(function(i) {
+            var $f     = $(this),
                 hidden = $f.prev('input'),
-                place = $f.data('placeholder');
-                
-            // Compare the hidden value with the placeholder value
-            if (place != undefined && hidden.val() === place) {
-                $f.val('').removeClass(opts.placeholderClass);
-                hidden.val('');
-            }
-        }).blur(function () {
-            var $f = $(this),
-                place = $f.data('placeholder');
-                
-            // If it's empty, put the placeholder in as the value
-            if (place != undefined && $f.val() === '') {
-                $f.val(place).addClass(opts.placeholderClass).prev('input').val(place).end();
-                
-                // Mask the placeholder if needed
-                if (opts.maskPlaceholder)
-                    $f.keyup();
+                place  = $f.data('placeholder');
+            
+            if ( place !== undefined ) {
+                $f.focus(function() {
+                    
+                    // Compare the hidden value with the placeholder value
+                    if ( hidden.val() === place ) {
+                        $f.val('').removeClass(opts.placeholderClass);
+                        hidden.val('');
+                    }
+                }).blur(function() {
+                    // If it's empty, put the placeholder in as the value
+                    if (place !== undefined && $f.val() === '') {
+                        $f.val(place).addClass(opts.placeholderClass).prev('input').val(place).end();
+
+                        // Mask the placeholder if needed
+                        if (opts.maskPlaceholder)
+                            $f.keyup();
+                    }
+                });;
+            } else {
+                $f.keyup();
             }
         });
-        
+                
         // Mask the placeholder if needed
         if (opts.maskPlaceholder)
             $fields.keyup();
@@ -321,10 +329,6 @@
         // Add placeholder stuff
         if (opts.placeholder)
             bindPlaceholder($fields);
-        
-        // or just mask the default value if needed
-        else if (opts.maskPlaceholder)
-            $fields.keyup();
         
         // Return the new fields for chaining
         // since the hidden fields previously
