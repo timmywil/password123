@@ -39,7 +39,7 @@ Release History
 
 <pre>
 $('input:password').password123();
-<pre>
+</pre>
 
 <h3>Placeholders</h3>
 For placeholders, just use the HTML5 placeholder attribute:
