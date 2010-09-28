@@ -45,7 +45,7 @@ $('input:password').password123();
 For placeholders, just use the HTML5 placeholder attribute:
 
 <pre>
-<input type="password" placeholder="password">
+&lt;input type=&quot;password&quot; placeholder=&quot;password&quot;&gt;
 </pre>
 
 This will work in all browsers and you can keep placeholders specific to certain elements.
