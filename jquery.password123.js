@@ -30,7 +30,8 @@
 // 
 // Release History
 // 
-// 1.2   - (9/28/2010) Placeholders changed to only work with HTML5 placeholder attribute, value now reserved for actual values
+// 1.2   - (9/28/2010) Placeholders changed to only work with HTML5 placeholder attribute, 
+//            'value' attribute now reserved for actual values
 // 1.1   - (7/5/2010) Add Placeholder functionality
 // 1.0   - (7/4/2010) Initial release
 //
