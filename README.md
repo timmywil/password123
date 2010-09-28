@@ -50,7 +50,6 @@ For placeholders, just use the HTML5 placeholder attribute:
 
 This will work in all browsers and you can keep placeholders specific to certain elements.
 
-<br/>
 <h3>Options</h3>
 
 <pre>
