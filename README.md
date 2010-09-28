@@ -9,7 +9,7 @@ License
 
 Copyright (c) 2010 timmy willison,<br/>
 Dual licensed under the MIT and GPL licenses.<br/>
-http://timmywillison.com/license/<br/>
+<a href="http://timmywillison.com/licence/">http://timmywillison.com/licence/</a><br/>
 
 Support and Testing
 
