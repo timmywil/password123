@@ -22,7 +22,7 @@ Chrome 4-5, Opera 9.6-10.5.
 Release History
 
 1.2   - (9/28/2010) Placeholders changed to only work with HTML5 placeholder attribute,<br/>
-'value' attribute now reserved for actual values<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'value' attribute now reserved for actual values<br/>
 1.1   - (7/5/2010) Add Placeholder functionality<br/>
 1.0   - (7/4/2010) Initial release
 
