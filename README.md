@@ -58,7 +58,7 @@ $('input:password').password123({
                 
     // You can use any html character code or
     // plain text character
-    character: "\&#8226;",
+    character: "&amp;#8226;",
     
     // This is the delay for when the last
     // character will change
