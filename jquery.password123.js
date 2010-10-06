@@ -40,8 +40,7 @@
 (function ($, window, document, undefined) {
 
     // Method / object references.
-    var $fields,
-        last,
+    var last,
         opts = {
         
             // You can use any html character code or
@@ -154,9 +153,9 @@
     // Returns the new text fields.
     function replaceFields(f) {
         var fields = [];
-        $(f).each(function (i, tem) {
+        $(f).each(function (i, item) {
 
-            var $field   = $(tem),
+            var $field   = $(item),
                 field_id = opts.prefix + i,
                 place    = $field.attr('placeholder') || undefined,
                 value    = $field.attr('value') || place || '';
@@ -302,7 +301,7 @@
                         if (opts.maskPlaceholder)
                             $f.keyup();
                     }
-                });;
+                });
             } else {
                 $f.keyup();
             }
@@ -321,7 +320,7 @@
         
         // Replace the fields with what we need
         // and store in var fields
-        $fields = replaceFields(this);
+        var $fields = replaceFields(this);
         
         // Bind textchange to the fields with
         // the letterChange function
