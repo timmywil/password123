@@ -49,24 +49,24 @@ $('input:password').password123({
     // You can use any html character code or
     // plain text character
     character: "&amp;#8226;",
-    
-    // This is the delay for when the last
+  
+    // This is the delay(ms) for when the last
     // character will change
     delay: 2000,
-    
+  
     // Use any prefix you like for the new
     // field ids, but they will always be zero-indexed
     prefix: "iField",
-    
+  
     // Enable the override of the placeholder attribute
     placeholder: true,
-    
+  
     // With this classname, you can set placeholder
     // specific styles in your own css
     placeholderClass: 'place',
-    
-    // You can mask the placeholder
-    maskPlaceholder: false
+  
+    // When true, this will mask the placeholder or initial value
+    maskInitial: false
     
 });
 </pre>

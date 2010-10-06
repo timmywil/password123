@@ -62,8 +62,8 @@
             // specific styles in your own css
             placeholderClass: 'place',
             
-            // You can mask the placeholder
-            maskPlaceholder: false
+            // When true, this will mask the placeholder or initial value
+            maskInitial: false
         };
 
     // =========================================== 
@@ -158,13 +158,14 @@
             var $field   = $(item),
                 field_id = opts.prefix + i,
                 place    = $field.attr('placeholder') || undefined,
-                value    = $field.attr('value') || place || '';
-            
+                value    = $field.attr('value') || (opts.placeholder ? place || '' : '');
+
             // The main field
             $('<input type="text"/>').attr({
-                'class': opts.placeholder && place !== undefined ? $field.attr('class') + ' ' + opts.placeholderClass : $field.attr('class'),
+                'class': opts.placeholder && place !== undefined && (value === place || value === '') ? $field.attr('class') + ' ' + opts.placeholderClass : $field.attr('class'),
                 'id': field_id,
-                'value': value
+                'value': value,
+                'placeholder': opts.placeholder ? undefined : place
             }).insertAfter($field)
                 // If value was set (tho rare on password fields), fill it in correctly
                 .data('value', $field.attr('value') || '')
@@ -278,27 +279,26 @@
     
     // Placeholder functionality
     function bindPlaceholder ($fields) {
-        
         $fields.each(function(i) {
             var $f     = $(this),
                 hidden = $f.prev('input'),
                 place  = $f.data('placeholder');
-            
+
             if ( place !== undefined ) {
                 $f.focus(function() {
-                    
+
                     // Compare the hidden value with the placeholder value
                     if ( hidden.val() === place ) {
-                        $f.val('').removeClass(opts.placeholderClass);
+                        $f.val('').removeClass( opts.placeholderClass );
                         hidden.val('');
                     }
                 }).blur(function() {
                     // If it's empty, put the placeholder in as the value
                     if (place !== undefined && $f.val() === '') {
-                        $f.val(place).addClass(opts.placeholderClass).prev('input').val(place).end();
+                        $f.val( place ).addClass( opts.placeholderClass ).prev('input').val( place ).end();
 
                         // Mask the placeholder if needed
-                        if (opts.maskPlaceholder)
+                        if ( opts.maskInitial )
                             $f.keyup();
                     }
                 });
@@ -306,17 +306,13 @@
                 $f.keyup();
             }
         });
-                
-        // Mask the placeholder if needed
-        if (opts.maskPlaceholder)
-            $fields.keyup();
     }
     
     // Extend jQuery
     $.fn.password123 = function (settings) {
         
         // Add in settings to options
-        opts = jQuery.extend(opts, settings);
+        opts = jQuery.extend( opts, settings );
         
         // Replace the fields with what we need
         // and store in var fields
@@ -324,12 +320,16 @@
         
         // Bind textchange to the fields with
         // the letterChange function
-        $fields.textchange(letterChange);
+        $fields.textchange( letterChange );
         
         // Add placeholder stuff
-        if (opts.placeholder)
-            bindPlaceholder($fields);
+        if ( opts.placeholder )
+            bindPlaceholder( $fields );
         
+        // Mask the placeholder or initial value if needed
+        if ( opts.maskInitial )
+            $fields.keyup();
+
         // Return the new fields for chaining
         // since the hidden fields previously
         // selected are no longer there
