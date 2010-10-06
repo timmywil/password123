@@ -1,5 +1,5 @@
 /*!
- * jQuery password123: iPhone Style Passwords Plugin - v1.2 - 9/28/2010
+ * jQuery password123: iPhone Style Passwords Plugin - v1.2 - 10/5/2010
  * http://timmywillison.com/samples/password123/
  * 
  * Copyright (c) 2010 timmy willison
@@ -7,7 +7,7 @@
  * http://timmywillison.com/licence/
  */
 
-// *Version: 1.2, Last updated: 9/28/2010*
+// *Version: 1.2, Last updated: 10/5/2010*
 // 
 // Demo         - http://timmywillison.com/samples/password123/
 // GitHub       - http://github.com/timmywil/password123
