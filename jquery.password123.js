@@ -1,18 +1,17 @@
 /*!
- * jQuery password123: iPhone Style Passwords Plugin - v1.2 - 10/5/2010
- * http://timmywillison.com/samples/password123/
- * 
- * Copyright (c) 2010 timmy willison
- * Dual licensed under the MIT and GPL licences.
- * http://timmywillison.com/licence/
- */
+* jQuery password123: iPhone Style Passwords Plugin - v1.2 - 10/5/2010
+* http://timmywillison.com/samples/password123/
+* Copyright (c) 2010 timmy willison
+* Dual licensed under the MIT and GPL licences.
+* http://timmywillison.com/licence/
+*/
 
 // *Version: 1.2, Last updated: 10/5/2010*
 // 
 // Demo         - http://timmywillison.com/samples/password123/
 // GitHub       - http://github.com/timmywil/password123
-// Source       - http://github.com/timmywil/password123/raw/master/jquery.password123.js (12.4kb)
-// (Minified)   - http://github.com/timmywil/password123/raw/master/jquery.password123.min.js (4.6kb)
+// Source       - http://github.com/timmywil/password123/raw/master/jquery.password123.js (12.5kb)
+// (Minified)   - http://github.com/timmywil/password123/raw/master/jquery.password123.min.js (3.5kb)
 // 
 // License
 // 
@@ -121,10 +120,12 @@
                 return sel.text.length;
             }
             // Others
-            else if (field.selectionStart || field.selectionStart == '0') return field.selectionStart;
-            // Something went wrong.
-            else return -1;
+            else if (field.selectionStart || field.selectionStart == '0') {
+                return field.selectionStart;
+            }
         }
+        // Something went wrong.
+        return -1;
     }
     
     // Sets the cursor position to a previous state
@@ -151,9 +152,9 @@
     // Replaces the password field with a hidden field
     // and adds the new visible text field.
     // Returns the new text fields.
-    function replaceFields(f) {
+    function replaceFields( $f ) {
         var fields = [];
-        $(f).each(function (i, item) {
+        $f.each(function ( i, item ) {
 
             var $field   = $(item),
                 field_id = opts.prefix + i,

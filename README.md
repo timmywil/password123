@@ -3,7 +3,7 @@
 Demo         - <a href="http://timmywillison.com/samples/password123/">http://timmywillison.com/samples/password123/</a><br/>
 GitHub       - <a href="http://github.com/timmywil/password123">http://github.com/timmywil/password123</a><br/>
 Source       - <a href="http://github.com/timmywil/password123/raw/master/jquery.password123.js">http://github.com/timmywil/password123/raw/master/jquery.password123.js (12.4kb)</a><br/>
-(Minified)   - <a href="http://github.com/timmywil/password123/raw/master/jquery.password123.min.js">http://github.com/timmywil/password123/raw/master/jquery.password123.min.js (4.6kb)</a><br/>
+(Minified)   - <a href="http://github.com/timmywil/password123/raw/master/jquery.password123.min.js">http://github.com/timmywil/password123/raw/master/jquery.password123.min.js (3.5kb)</a><br/>
 
 License
 
@@ -40,6 +40,15 @@ For placeholders, just use the HTML5 placeholder attribute:
 </pre>
 
 This will work in all browsers and you can keep placeholders specific to certain elements.
+
+Then assign styles to your placeholder class ('which you can change with options'):
+<pre>
+.place {
+    color: #999;
+}
+</pre>
+
+This allows for more flexibility than browser defaults, thought most of the time you'll just want to have the placeholder be a lighter color.
 
 <h3>Options</h3>
 
