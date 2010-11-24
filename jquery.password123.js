@@ -10,8 +10,8 @@
 // 
 // Demo         - http://timmywillison.com/samples/password123/
 // GitHub       - http://github.com/timmywil/password123
-// Source       - http://github.com/timmywil/password123/raw/master/jquery.password123.js (13.7kb)
-// (Minified)   - http://github.com/timmywil/password123/raw/master/jquery.password123.min.js (3.6kb)
+// Source       - http://github.com/timmywil/password123/raw/master/jquery.password123.js (14.3kb)
+// (Minified)   - http://github.com/timmywil/password123/raw/master/jquery.password123.min.js (3.77kb)
 // 
 // License
 // 
