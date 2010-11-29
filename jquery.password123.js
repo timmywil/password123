@@ -181,7 +181,7 @@
                 classes  = opts.placeholder && place !== undefined && (value === place || value === '') ? $field.attr('class') + ' ' + opts.placeholderClass : $field.attr('class');
 
             // The main field
-            $('<input type="text"/>').attr({
+            var newInput = $('<input type="text"/>').attr({
                 'class': classes,
                 'id': field_id,
                 'value': value,
@@ -200,9 +200,9 @@
                     // Add hidden field value to data for placeholder comparison
                     // This to avoid sending the placeholder value when submitting the form
                     'newVal': value
-                });
-
-            fields.push(document.getElementById( field_id ));
+                })[0];
+            
+            fields.push( newInput );
             
             // The hidden field that will get sent with the form
             $('<input type="hidden"/>').attr({

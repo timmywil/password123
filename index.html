@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>iPhone Passwords</title>
+  <link rel="shortcut icon" href="/images/my_friend.jpg"/>
+  <meta http-equiv="imagetoolbar" content="no">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="Author" content="Timmy Willison"/>
+  <meta name="Description" content="Password fields - iPhone style"/>
+  <meta name="Keywords" content="timmy willison password fields iphone style"/>
+  <link rel="stylesheet" type="text/css" href="password123.css"/>
+  <!--[if lt IE 9]>
+  <script type='text/javascript'>
+    document.createElement("header");
+    document.createElement("hgroup");
+    document.createElement("nav");
+    document.createElement("section");
+    document.createElement("article");
+    document.createElement("footer");
+    document.createElement("aside");
+  </script>
+  <![endif]-->
+</head>
+<body>
+    <header>
+        <hgroup>
+            <h1>iPhone passwords on the web</h1>
+            <h2>timmy willison</h2>
+        </hgroup>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="/">back to home</a></li>
+            <li><a href="http://brainbumping.com">see the blog post explanation</a></li>
+            <li><a href="http://github.com/timmywil/password123">on github for download or forking</a></li>
+        </ul>
+    </nav>
+    
+    <div id="content">
+      <section>
+        <form action="password123.html">
+          <label for="password">Enter A Password:</label>
+          <input type="password" name="password" id="password" placeholder="placeholder" size="40" tabindex="0" maxlength="10" />
+          <input type="image" id="send" src="send.png"/>
+        </form>
+        <div id="show-value">Send the Form: None Entered</div>
+      </section>
+    </div>
+    
+    <footer>
+        copyright &copy; 2010 timmy willison
+    </footer>
+    
+    <!-- Google CDN jQuery -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    
+    <script type="text/javascript" src="jquery.password123.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+        
+            // Kick off the plugin
+            $('input:password').password123();
+            
+            // Display form submissions on the page
+            $('form').submit(function () {
+                $('#show-value').text('Send the Form: ' + $(this).serialize());
+                return false;
+            });
+        });
+    </script>
+    
+    <!-- Analytics -->
+    <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+        try {
+            var pageTracker = _gat._getTracker("UA-15918109-1");
+            pageTracker._trackPageview();
+        } catch(err) {}
+    </script>
+</body>
+</html>
