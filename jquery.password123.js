@@ -149,14 +149,14 @@
 			}
 
 			// The hidden field that will get sent with the form
-			self.$hidden = $('<input type="hidden"/>').attr({
-				'name': $field.attr('name'),
-				'id': field.id,
-				'class': field.className,
-				'disabled': $field.attr('disabled')
-			}).replaceAll( $field )
-				// Fill starting value with placeholder 
-				// for later comparisons
+			self.$hidden = $('<input type="hidden"/>')
+				.attr({
+					'name': $field.attr('name'),
+					'id': field.id,
+					'class': field.className,
+					'disabled': $field.attr('disabled')
+				})
+				.replaceAll( $field )
 				.val( value !== place ? value : '' );
 			
 			self.$oldField = $field;
@@ -166,14 +166,10 @@
 				.attr( attrs )
 				.insertAfter( self.$hidden )
 				.data({
-					// If value was set, fill it in correctly
-					'value': $field.val() || '',
-					// Attach placeholder for comparison to value
-					'placeholder': place,
-					// This to avoid sending the placeholder value when submitting the form
-					'newVal': value,
-					// Attach the instance of this plugin
-					'password123': self
+					'value': $field.val() || '', // If value was set, fill it in correctly
+					'placeholder': place, // Attach placeholder for comparison to value
+					'newVal': value, // This to avoid sending the placeholder value when submitting the form
+					'password123': self // Attach the instance of this plugin
 				});
 		},
 
@@ -198,8 +194,9 @@
 				var old = this.$hidden.val(),
 					newVal;
 
-				if ( fv.length < old.length - 1 ) newVal = old.substr( 0, fv.length );
-				else {
+				if ( fv.length < old.length - 1 ) {
+					newVal = old.substr( 0, fv.length );
+				} else {
 					var cp = this._getCursorPosition();
 
 					// Create the new value with the correct
@@ -286,7 +283,6 @@
 
 			if ( place !== undefined ) {
 				self.$field.focus(function() {
-
 					// Compare the hidden value with the placeholder value
 					if ( self.$field.data('newVal') === place ) {
 						self.$field.val('').removeClass( self.opts.placeholderClass ).data( 'newVal', '' );

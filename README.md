@@ -1,7 +1,7 @@
 *Version: 1.4, Last updated: 2/1/2011*
  
 Demo				 - <a href="http://timmywillison.com/samples/password123/">http://timmywillison.com/samples/password123/</a><br/>
-Testing			 - <a href="http://timmywillison.com/samples/password123/qunit/test/">http://timmywillison.com/samples/password123/qunit/test/</a>
+Testing			 - <a href="http://timmywillison.com/samples/password123/qunit/test/">http://timmywillison.com/samples/password123/qunit/test/</a><br/>
 GitHub			 - <a href="http://github.com/timmywil/password123">http://github.com/timmywil/password123</a><br/>
 Source			 - <a href="http://github.com/timmywil/password123/raw/master/jquery.password123.js">http://github.com/timmywil/password123/raw/master/jquery.password123.js (12.1kb)</a><br/>
 (Minified)	 - <a href="http://github.com/timmywil/password123/raw/master/jquery.password123.min.js">http://github.com/timmywil/password123/raw/master/jquery.password123.min.js (4.4kb)</a><br/>
