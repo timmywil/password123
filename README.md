@@ -1,14 +1,14 @@
-*Version: 1.4, Last updated: 2/1/2011*
+*Version: 1.5, Last updated: 2/1/2011*
  
 Demo				 - <a href="http://timmywillison.com/samples/password123/">http://timmywillison.com/samples/password123/</a><br/>
 Testing			 - <a href="http://timmywillison.com/samples/password123/qunit/test/">http://timmywillison.com/samples/password123/qunit/test/</a><br/>
 GitHub			 - <a href="http://github.com/timmywil/password123">http://github.com/timmywil/password123</a><br/>
-Source			 - <a href="http://github.com/timmywil/password123/raw/master/jquery.password123.js">http://github.com/timmywil/password123/raw/master/jquery.password123.js (12.1kb)</a><br/>
-(Minified)	 - <a href="http://github.com/timmywil/password123/raw/master/jquery.password123.min.js">http://github.com/timmywil/password123/raw/master/jquery.password123.min.js (4.4kb)</a><br/>
+Source			 - <a href="http://github.com/timmywil/password123/raw/master/jquery.password123.js">http://github.com/timmywil/password123/raw/master/jquery.password123.js (13.8kb)</a><br/>
+(Minified)	 - <a href="http://github.com/timmywil/password123/raw/master/jquery.password123.min.js">http://github.com/timmywil/password123/raw/master/jquery.password123.min.js (5.2kb)</a><br/>
 
 License
 
-Copyright (c) 2010 timmy willison,<br/>
+Copyright (c) 2011 timmy willison,<br/>
 Dual licensed under the MIT and GPL licenses.<br/>
 <a href="http://timmywillison.com/licence/">http://timmywillison.com/licence/</a><br/>
 
@@ -22,6 +22,7 @@ Browsers Tested - Internet Explorer 6-8, Firefox 2-3.7, Safari 3-5,<br/>
 
 Release History
 
+1.5   - (2/1/2011) Added widget-style option method<br/>
 1.4		- (2/1/2011) Restructured plugin, added destroy method, added tests<br/>
 1.3		- (11/23/2010) Added Google Closure Compiler comments, common password field attribute<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;support when replacing fields, and no longer sends placeholder value when submitting the form.<br/>
@@ -88,11 +89,21 @@ $('input:password').password123({
 
 <h5>Destroy</h5>
 <pre>
-$('#checkbox').change(function() {
-		if ( this.checked ) {
-				$('input:password').password123();
-		} else {
-				$('input:password').password123("destroy");
-		}
-});
+	$('#checkbox').change(function() {
+			if ( this.checked ) {
+					$('input:password').password123();
+			} else {
+					$('input:password').password123("destroy");
+			}
+	});
+</pre>
+
+<h5>Option (Getter/Setter)</h5>
+<pre>
+	// Set
+	$('#iField0').password123("option", "delay", 3000);
+	$('#iField0').password123("option", "placeholder", false);
+	
+	// Get
+	var prefix = $('#iField0').password123("option", "prefix");
 </pre>

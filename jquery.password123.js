@@ -1,22 +1,22 @@
 /**
-*	@preserve jQuery password123: iPhone Style Passwords Plugin - v1.4 - 11/23/2010
+*	@preserve jQuery password123: iPhone Style Passwords Plugin - v1.5 - 2/1/2011
 *	http://timmywillison.com/samples/password123/
 *	Copyright (c) 2010 timmy willison
 *	Dual licensed under the MIT and GPL licences.
 *	http://timmywillison.com/licence/
 */
 
-// *Version: 1.4, Last updated: 2/1/2010*
+// *Version: 1.5, Last updated: 2/1/2011*
 // 
 // Demo			- http://timmywillison.com/samples/password123/
 // Testing		- http://timmywillison.com/samples/password123/qunit/test/
 // GitHub		- http://github.com/timmywil/password123
-// Source		- http://github.com/timmywil/password123/raw/master/jquery.password123.js (12.1kb)
-// (Minified)	- http://github.com/timmywil/password123/raw/master/jquery.password123.min.js (4.4kb)
+// Source		- http://github.com/timmywil/password123/raw/master/jquery.password123.js (13.8kb)
+// (Minified)	- http://github.com/timmywil/password123/raw/master/jquery.password123.min.js (5.2kb)
 // 
 // License
 // 
-// Copyright (c) 2010 timmy willison,
+// Copyright (c) 2011 timmy willison,
 // Dual licensed under the MIT and GPL licenses.
 // http://timmywillison.com/licence/
 // 
@@ -30,6 +30,7 @@
 // 
 // Release History
 // 
+// 1.5   - (2/1/2011) Added widget-style option method, only instantiate when not calling a method
 // 1.4	 - (2/1/2011) Restructured plugin, added destroy method, added tests
 // 1.3	 - (11/23/2010) Added Google Closure Compiler comments, common password field attribute
 //				support when replacing fields, and no longer sends placeholder value when submitting the form.
@@ -43,13 +44,20 @@
 ;(function ($, window, document, undefined) {
 	
 	// Extend jQuery
-	$.fn.password123 = function ( args ) {
+	$.fn.password123 = function ( options ) {
+		var instance = $.data( this[0], "password123" ),
+			args = Array.prototype.slice.call( arguments, 1 );
 		
-		// Returns the new password fields for chaining
-		// since the password fields previously
-		// selected are replaced with hidden fields
+		// Catch method calls
+		if ( instance && typeof options === "string" && instance[ options ] && options.charAt( 0 ) !== "_" ) {
+			args.unshift( this );
+			return instance[ options ].apply( instance, args );
+		}
+		
 		return this.map(function( i, elem ) {
-			return new password123.init( elem, args );
+			// Returns the new password fields for chaining
+			// Old password fields are removed
+			return new password123.init( elem, options, args );
 		});
 	};
 	
@@ -57,21 +65,17 @@
 		counter = 0,
 	password123 = {
 		
-		init: function( elem, args ) {
+		init: function( elem, options, args ) {
 			
 			// Catch fields that aren't password fields
 			if ( !elem.type === "password" ) {
 				return elem;
 			}
+			
 			var self = this;
 			
-			// Catch method calls
-			if ( typeof args === "string" && self[ args ] && args.charAt( 0 ) !== "_" ) {
-				return self[ args ]( elem, args );
-			}
-			
 			// Continue regularly
-			self.opts = $.extend({
+			self.options = $.extend({
 
 				// You can use any html character code or
 				// plain text character
@@ -94,10 +98,10 @@
 
 				// When true, this will mask the placeholder or initial value
 				maskInitial: false
-			}, args);
+			}, options);
 			
 			// HTML encode the character
-			self.encodedChar = $('<div>'+ self.opts.character +'</div>').text();
+			self.encodedChar = $('<div>'+ self.options.character +'</div>').text();
 			
 			// Replace the fields with what we need
 			// and store in var fields
@@ -111,12 +115,12 @@
 			
 			
 			// Add placeholder stuff
-			if ( self.opts.placeholder ) {
+			if ( self.options.placeholder ) {
 				self._bindPlaceholder();
 			}
 
 			// Mask the placeholder or initial value if needed
-			if ( self.opts.maskInitial ) {
+			if ( self.options.maskInitial ) {
 				self.$field.keyup();
 			}
 			
@@ -135,12 +139,12 @@
 			var	self     = this,
 				$field   = $(field),
 				place    = $field.attr('placeholder') || undefined,
-				field_id = self.opts.prefix + counter++,
-				value    = $field.val() || ( self.opts.placeholder ? place || '' : '' ),
-				classes  = self.opts.placeholder && place !== undefined && (value === place || value === '') ?
-								field.className + ' ' + self.opts.placeholderClass :
+				field_id = self.options.prefix + counter++,
+				value    = $field.val() || ( self.options.placeholder ? place || '' : '' ),
+				classes  = self.options.placeholder && place !== undefined && (value === place || value === '') ?
+								field.className + ' ' + self.options.placeholderClass :
 								field.className,
-				attrs = { 'class': classes, 'id': field_id, 'value': value, 'placeholder': self.opts.placeholder ? undefined : place },
+				attrs = { 'class': classes, 'id': field_id, 'value': value, 'placeholder': self.options.placeholder ? undefined : place },
 				standards = [ 'size', 'tabindex', 'readonly', 'disabled', 'maxlength' ];
 
 			// Combine attrs with standard attrs
@@ -212,6 +216,8 @@
 					this.$hidden.val( newVal );
 				}
 			}
+			
+			return this;
 		},
 
 		/**
@@ -263,7 +269,7 @@
 					if ( cp != len ) {
 						self._setCursorPosition( cp );
 					}
-				}, self.opts.delay);
+				}, self.options.delay);
 			}
 
 			// Reset cursor position to what it was if not at end
@@ -282,26 +288,54 @@
 				place = self.$field.data('placeholder');
 
 			if ( place !== undefined ) {
-				self.$field.focus(function() {
-					// Compare the hidden value with the placeholder value
-					if ( self.$field.data('newVal') === place ) {
-						self.$field.val('').removeClass( self.opts.placeholderClass ).data( 'newVal', '' );
-						self.$hidden.val('');
-					}
-				}).blur(function() {
-					// If it's empty, put the placeholder in as the value
-					if ( place !== undefined && self.$field.val() === '' ) {
-						self.$field.val( place ).addClass( self.opts.placeholderClass ).data( 'newVal', place );
+				self.$field.bind({
+					"focus.place": function() {
+						// Compare the hidden value with the placeholder value
+						if ( self.$field.data('newVal') === place ) {
+							self.$field.val('').removeClass( self.options.placeholderClass ).data( 'newVal', '' );
+							self.$hidden.val('');
+						}
+					},
+					"blur.place": function() {
+						// If it's empty, put the placeholder in as the value
+						if ( place !== undefined && self.$field.val() === '' ) {
+							self.$field.val( place ).addClass( self.options.placeholderClass ).data( 'newVal', place );
 
-						// Mask the placeholder if needed
-						if ( self.opts.maskInitial ) {
-							self.$field.keyup();
+							// Mask the placeholder if needed
+							if ( self.options.maskInitial ) {
+								self.$field.keyup();
+							}
 						}
 					}
 				});
 			} else {
 				self.$field.keyup();
 			}
+			return self;
+		},
+		
+		/**
+		*	Remove placeholder functionality
+		*	@private
+		*/
+		_changePlaceholder: function( isPlace ) {
+			if ( isPlace && !this.options.placeholder ) {
+				return this._bindPlaceholder();
+			} else if ( !isPlace && this.options.placeholder ) {
+				this.$field.focus().unbind('.place').blur();
+			}
+			return this;
+		},
+		
+		/**
+		*	Change the id prefix on this field
+		*	@private
+		*/
+		_changePrefix: function( value ) {
+			var cur = this.$field.attr("id"),
+				prev = this.options.prefix;
+			this.$field.attr( 'id', cur.replace( prev, value ) );
+			return this;
 		},
 		
 		/**
@@ -361,40 +395,81 @@
 		*	@return The original password field
 		*/
 		destroy: function( elem ) {
-			var $field = $(elem),
-				self = $field.data("password123"),
-				val = self.$hidden.remove().val();
-			return self.$oldField.val( val ).replaceAll( $field )[0];
+			var val = this.$hidden.remove().val();
+			return this.$oldField.val( val ).replaceAll( elem );
+		},
+		
+		/**
+		*	Get/set option on an existing password123 instance
+		*	@return The password123 field
+		*/
+		option: function( elems, key, value ) {
+			if ( !key ) {
+				return $.extend( {}, this.options ); // Avoids returning direct reference
+			}
+			var options = key;
+			
+			if  ( typeof key === "string" ) {
+				if ( value === undefined ) {
+					return this.options[ key ];
+				}
+				options = {};
+				options[ key ] = value;
+			}
+
+			this._setOptions( options );
+
+			return elems;
+		},
+		
+		/**
+		*	Internally sets options
+		*	@return password123 instance
+		*	@private
+		*/
+		_setOptions: function( options ) {
+			var self = this;
+			$.each( options, function( key, value ) {
+				switch ( key ) {
+					case "placeholder":
+						self._changePlaceholder( value === "false" ? false : value );
+						break;
+					case "prefix":
+						self._changePrefix( value );
+				}
+				self.options[ key ] = value;
+			});
+			return this;
 		}
 	};
 	password123.init.prototype = password123;
 	
 	// Textchange event with a little extra
 	$.event.special.textchange = {
-		setup: function (data, namespaces) {
+		setup: function( data, namespaces ) {
 			$(this).bind('keyup.textchange', $.event.special.textchange.handler);
 			$(this).bind('cut.textchange paste.textchange input.textchange', $.event.special.textchange.delayedHandler);
 		}, 
-		teardown: function (namespaces) {
+		teardown: function( namespaces ) {
 			$(this).unbind('.textchange');
 		}, 
-		handler: function (event) {
+		handler: function( event ) {
 			$.event.special.textchange.triggerIfChanged( $(this) );
 		}, 
-		delayedHandler: function (event) {
+		delayedHandler: function( event ) {
 			var $element = $(this);
 			
-			setTimeout(function () {
+			setTimeout(function() {
 				$.event.special.textchange.triggerIfChanged( $element );
 			}, 25);
 		}, 
-		triggerIfChanged: function ($element) {
+		triggerIfChanged: function( $element ) {
 			var v = $element.val();
 			
 			if ( $element.val() !== $element.data('lastValue') ) {
 				
 				// Check if something larger than one letter was pasted into the field
-				var p123 = $element.data('password123');
+				var p123 = $.data( $element[0], "password123" );
 				if ( v.length > 1 && v.indexOf( p123.encodedChar ) === -1 ) {
 					
 					// If so, we need to save it before it disappears,
