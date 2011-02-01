@@ -1,7 +1,7 @@
 /**
 *	@preserve jQuery password123: iPhone Style Passwords Plugin - v1.5 - 2/1/2011
 *	http://timmywillison.com/samples/password123/
-*	Copyright (c) 2010 timmy willison
+*	Copyright (c) 2011 timmy willison
 *	Dual licensed under the MIT and GPL licences.
 *	http://timmywillison.com/licence/
 */
@@ -149,7 +149,8 @@
 
 			// Combine attrs with standard attrs
 			for ( var i = 0; i < standards.length; i++ ) {
-				attrs[ standards[i] ] = $field.attr( standards[i] );
+				var attr = $field.attr( standards[i] );
+				attrs[ standards[i] ] = attr && attr > -1 ? attr : undefined;
 			}
 
 			// The hidden field that will get sent with the form
@@ -355,7 +356,7 @@
 					return sel.text.length;
 				}
 				// Others
-				else if ( elem.selectionStart || elem.selectionStart == '0' ) {
+				else if ( elem.selectionStart !== undefined ) {
 					return elem.selectionStart;
 				}
 			}
@@ -379,7 +380,7 @@
 					range.select();
 				}
 				// Others
-				else if ( elem.selectionStart ) {
+				else if ( elem.setSelectionRange ) {
 					elem.focus();
 					elem.setSelectionRange( pos, pos );
 				}
