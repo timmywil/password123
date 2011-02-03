@@ -57,7 +57,7 @@
 		return this.map(function( i, elem ) {
 			// Returns the new password fields for chaining
 			// Old password fields are removed
-			return new password123._init( elem, options, args );
+			return new password123._init( elem, options );
 		});
 	};
 	
@@ -65,7 +65,7 @@
 		counter = 0,
 	password123 = {
 		
-		_init: function( elem, options, args ) {
+		_init: function( elem, options ) {
 			
 			// Catch fields that aren't password fields
 			if ( !elem.type === "password" ) {
