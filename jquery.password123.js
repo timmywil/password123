@@ -49,7 +49,7 @@
 			args = Array.prototype.slice.call( arguments, 1 );
 		
 		// Catch method calls
-		if ( instance && typeof options === "string" && instance[ options ] && options.charAt( 0 ) !== "_" ) {
+		if ( !!instance && typeof options === "string" && options.charAt( 0 ) !== "_" && instance[ options ] ) {
 			args.unshift( this );
 			return instance[ options ].apply( instance, args );
 		}
@@ -57,7 +57,7 @@
 		return this.map(function( i, elem ) {
 			// Returns the new password fields for chaining
 			// Old password fields are removed
-			return new password123.init( elem, options, args );
+			return new password123._init( elem, options, args );
 		});
 	};
 	
@@ -65,7 +65,7 @@
 		counter = 0,
 	password123 = {
 		
-		init: function( elem, options, args ) {
+		_init: function( elem, options, args ) {
 			
 			// Catch fields that aren't password fields
 			if ( !elem.type === "password" ) {
@@ -129,12 +129,12 @@
 		},
 		
 		/**
-		*	Replaces the password field with a hidden field
-		*	and adds the new visible text field.
-		*	@param {object} $field One field to replace
-		*	@return {object} The new text field.
-		*	@private
-		*/
+		 * Replaces the password field with a hidden field
+		 * and adds the new visible text field.
+		 * @param {object} $field One field to replace
+		 * @return {object} The new text field.
+		 * @private
+		 */
 		_replaceField: function( field ) {
 			var	self     = this,
 				$field   = $(field),
@@ -179,10 +179,10 @@
 		},
 
 		/**
-		*	Calls for the necessary adjustments when
-		*	a field is changed
-		*	@private
-		*/
+		 * Calls for the necessary adjustments when
+		 * a field is changed
+		 * @private
+		 */
 		_letterChange: function( elem ) {
 			var fv = this.$field.val();
 
@@ -222,11 +222,11 @@
 		},
 
 		/**
-		*	Updates the field with the dots as the user types,
-		*	and sets the timeout for the last char.
-		*	@return {string} The new value to set to field.data
-		*	@private
-		*/
+		 * Updates the field with the dots as the user types,
+		 * and sets the timeout for the last char.
+		 * @return {string} The new value to set to field.data
+		 * @private
+		 */
 		_fieldChange: function() {
 			var self = this;
 			
@@ -281,9 +281,9 @@
 		},
 
 		/**
-		*	Placeholder functionality
-		*	@private
-		*/
+		 * Placeholder functionality
+		 * @private
+		 */
 		_bindPlaceholder: function() {
 			var self = this,
 				place = self.$field.data('placeholder');
@@ -316,9 +316,9 @@
 		},
 		
 		/**
-		*	Remove placeholder functionality
-		*	@private
-		*/
+		 * Remove placeholder functionality
+		 * @private
+		 */
 		_changePlaceholder: function( isPlace ) {
 			if ( isPlace && !this.options.placeholder ) {
 				return this._bindPlaceholder();
@@ -329,9 +329,9 @@
 		},
 		
 		/**
-		*	Change the id prefix on this field
-		*	@private
-		*/
+		 * Change the id prefix on this field
+		 * @private
+		 */
 		_changePrefix: function( value ) {
 			var cur = this.$field.attr("id"),
 				prev = this.options.prefix;
@@ -340,11 +340,11 @@
 		},
 		
 		/**
-		*	Gets the current cursor position in a textfield
-		*	to determine where to delete/update a character.
-		*	@return {Number} The index for the position of the cursor. 
-		*	@private
-		*/
+		 * Gets the current cursor position in a textfield
+		 * to determine where to delete/update a character.
+		 * @return {Number} The index for the position of the cursor. 
+		 * @private
+		 */
 		_getCursorPosition: function() {
 			var elem = this.$field[0];
 			if ( elem != null ) {
@@ -364,12 +364,12 @@
 		},
 
 		/**
-		*	Sets the cursor position to a previous state
-		*	if the field was updated somewhere in the middle.
-		*	@param {Element} field The raw field.
-		*	@param {Number} pos The position to set to.
-		*	@private
-		*/
+		 * Sets the cursor position to a previous state
+		 * if the field was updated somewhere in the middle.
+		 * @param {Element} field The raw field.
+		 * @param {Number} pos The position to set to.
+		 * @private
+		 */
 		_setCursorPosition: function( pos ) {
 			var elem = this.$field[0];
 			if ( elem != null ) {
@@ -391,19 +391,39 @@
 		},
 		
 		/**
-		*	Destroys everything password123 has done and
-		*	sets the original password field back in place
-		*	@return The original password field
-		*/
+		 * Internally sets options
+		 * @return password123 instance
+		 * @private
+		 */
+		_setOptions: function( options ) {
+			var self = this;
+			$.each( options, function( key, value ) {
+				switch ( key ) {
+					case "placeholder":
+						self._changePlaceholder( value === "false" ? false : value );
+						break;
+					case "prefix":
+						self._changePrefix( value );
+				}
+				self.options[ key ] = value;
+			});
+			return this;
+		},
+		
+		/**
+		 * Destroys everything password123 has done and
+		 * sets the original password field back in place
+		 * @return The original password field
+		 */
 		destroy: function( elem ) {
 			var val = this.$hidden.remove().val();
 			return this.$oldField.val( val ).replaceAll( elem );
 		},
 		
 		/**
-		*	Get/set option on an existing password123 instance
-		*	@return The password123 field
-		*/
+		 * Get/set option on an existing password123 instance
+		 * @return The password123 field
+		 */
 		option: function( elems, key, value ) {
 			if ( !key ) {
 				return $.extend( {}, this.options ); // Avoids returning direct reference
@@ -421,29 +441,9 @@
 			this._setOptions( options );
 
 			return elems;
-		},
-		
-		/**
-		*	Internally sets options
-		*	@return password123 instance
-		*	@private
-		*/
-		_setOptions: function( options ) {
-			var self = this;
-			$.each( options, function( key, value ) {
-				switch ( key ) {
-					case "placeholder":
-						self._changePlaceholder( value === "false" ? false : value );
-						break;
-					case "prefix":
-						self._changePrefix( value );
-				}
-				self.options[ key ] = value;
-			});
-			return this;
 		}
 	};
-	password123.init.prototype = password123;
+	password123._init.prototype = password123;
 	
 	// Textchange event with a little extra
 	$.event.special.textchange = {
