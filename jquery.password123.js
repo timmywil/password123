@@ -290,14 +290,14 @@
 
 			if ( place !== undefined ) {
 				self.$field.bind({
-					"focus.place": function() {
+					"focus.password123": function() {
 						// Compare the hidden value with the placeholder value
 						if ( self.$field.data('newVal') === place ) {
 							self.$field.val('').removeClass( self.options.placeholderClass ).data( 'newVal', '' );
 							self.$hidden.val('');
 						}
 					},
-					"blur.place": function() {
+					"blur.password123": function() {
 						// If it's empty, put the placeholder in as the value
 						if ( place !== undefined && self.$field.val() === '' ) {
 							self.$field.val( place ).addClass( self.options.placeholderClass ).data( 'newVal', place );
@@ -323,7 +323,7 @@
 			if ( isPlace && !this.options.placeholder ) {
 				return this._bindPlaceholder();
 			} else if ( !isPlace && this.options.placeholder ) {
-				this.$field.focus().unbind('.place').blur();
+				this.$field.focus().unbind('.password123').blur();
 			}
 			return this;
 		},
@@ -430,7 +430,7 @@
 			}
 			var options = key;
 			
-			if  ( typeof key === "string" ) {
+			if ( typeof key === "string" ) {
 				if ( value === undefined ) {
 					return this.options[ key ];
 				}
