@@ -89,12 +89,13 @@ $('input:password').password123({
 
 <h5>Destroy</h5>
 <pre>
+	var $input = $('input:password');
 	$('#checkbox').change(function() {
-			if ( this.checked ) {
-					$('input:password').password123();
-			} else {
-					$('input:password').password123("destroy");
-			}
+		if (this.checked) {
+			$input = $input.password123();
+		} else { 
+			$input = $input.password123("destroy");
+		}
 	});
 </pre>
 
