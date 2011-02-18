@@ -47,7 +47,7 @@
 	$.fn.password123 = function ( options ) {
 		var instance = $.data( this[0], "password123" ),
 			args = Array.prototype.slice.call( arguments, 1 );
-		
+
 		// Catch method calls
 		if ( !!instance && typeof options === "string" && options.charAt( 0 ) !== "_" && instance[ options ] ) {
 			args.unshift( this );
