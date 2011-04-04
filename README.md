@@ -6,6 +6,10 @@ GitHub			 - <a href="http://github.com/timmywil/password123">http://github.com/t
 Source			 - <a href="http://github.com/timmywil/password123/raw/master/jquery.password123.js">http://github.com/timmywil/password123/raw/master/jquery.password123.js (13.8kb)</a><br/>
 (Minified)	 - <a href="http://github.com/timmywil/password123/raw/master/jquery.password123.min.js">http://github.com/timmywil/password123/raw/master/jquery.password123.min.js (5.2kb)</a><br/>
 
+Sites Using password123
+-----------------------
+[mailchimp.com](http://mailchimp.com)
+
 License
 
 Copyright (c) 2011 timmy willison,<br/>
