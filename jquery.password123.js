@@ -7,34 +7,34 @@
 */
 
 // *Version: 1.5, Last updated: 2/1/2011*
-// 
+//
 // Demo			- http://timmywillison.com/samples/password123/
 // Testing		- http://timmywillison.com/samples/password123/qunit/test/
 // GitHub		- http://github.com/timmywil/password123
 // Source		- http://github.com/timmywil/password123/raw/master/jquery.password123.js (13.8kb)
 // (Minified)	- http://github.com/timmywil/password123/raw/master/jquery.password123.min.js (5.2kb)
-// 
+//
 // License
-// 
+//
 // Copyright (c) 2011 timmy willison,
 // Dual licensed under the MIT and GPL licenses.
 // http://timmywillison.com/licence/
-// 
+//
 // Support and Testing
-// 
+//
 // Versions of jQuery and browsers this was tested on.
-// 
+//
 // jQuery Versions - 1.3.2-1.5
 // Browsers Tested - Internet Explorer 6-8, Firefox 2-3.7, Safari 3-5,
 //					 Chrome 4-6, Opera 9.6-10.5.
-// 
+//
 // Release History
-// 
+//
 // 1.5   - (2/1/2011) Added widget-style option method, only instantiate when not calling a method
 // 1.4	 - (2/1/2011) Restructured plugin, added destroy method, added tests
 // 1.3	 - (11/23/2010) Added Google Closure Compiler comments, common password field attribute
 //				support when replacing fields, and no longer sends placeholder value when submitting the form.
-// 1.2	 - (9/28/2010) Placeholders changed to only work with HTML5 placeholder attribute, 
+// 1.2	 - (9/28/2010) Placeholders changed to only work with HTML5 placeholder attribute,
 //				'value' attribute now reserved for actual values
 // 1.1	 - (7/5/2010) Add Placeholder functionality
 // 1.0	 - (7/4/2010) Initial release
@@ -42,7 +42,7 @@
 // See README for usage and placeholder explanation
 
 ;(function ($, window, document, undefined) {
-	
+
 	// Extend jQuery
 	$.fn.password123 = function ( options ) {
 		var instance = $.data( this[0], "password123" ),
@@ -53,27 +53,27 @@
 			args.unshift( this );
 			return instance[ options ].apply( instance, args );
 		}
-		
+
 		return this.map(function( i, elem ) {
 			// Returns the new password fields for chaining
 			// Old password fields are removed
 			return new password123._init( elem, options );
 		});
 	};
-	
+
 	var clear_timeout = window.clearTimeout,
 		counter = 0,
 	password123 = {
-		
+
 		_init: function( elem, options ) {
-			
+
 			// Catch fields that aren't password fields
 			if ( !elem.type === "password" ) {
 				return elem;
 			}
-			
+
 			var self = this;
-			
+
 			// Continue regularly
 			self.options = $.extend({
 
@@ -99,21 +99,21 @@
 				// When true, this will mask the placeholder or initial value
 				maskInitial: false
 			}, options);
-			
+
 			// HTML encode the character
 			self.encodedChar = $('<div>'+ self.options.character +'</div>').text();
-			
+
 			// Replace the fields with what we need
 			// and store in var fields
 			self.$field = self._replaceField( elem )
-			
+
 				// Bind textchange to the fields with
 				// the letterChange function
 				.bind('textchange', function() {
 					self._letterChange.call( self );
 				});
-			
-			
+
+
 			// Add placeholder stuff
 			if ( self.options.placeholder ) {
 				self._bindPlaceholder();
@@ -123,11 +123,11 @@
 			if ( self.options.maskInitial ) {
 				self.$field.keyup();
 			}
-			
+
 			// Return the new password field
 			return self.$field[0];
 		},
-		
+
 		/**
 		 * Replaces the password field with a hidden field
 		 * and adds the new visible text field.
@@ -163,9 +163,9 @@
 				})
 				.replaceAll( $field )
 				.val( value !== place ? value : '' );
-			
+
 			self.$oldField = $field;
-			
+
 			// The main field
 			return $('<input type="text"/>')
 				.attr( attrs )
@@ -206,8 +206,8 @@
 
 					// Create the new value with the correct
 					// character deleted
-					newVal = old.length > cp + 1 && cp > -1 
-						? old.slice(0, cp).concat(old.slice(cp + 1)) 
+					newVal = old.length > cp + 1 && cp > -1
+						? old.slice(0, cp).concat(old.slice(cp + 1))
 						: old.slice(0, cp);
 				}
 
@@ -217,7 +217,7 @@
 					this.$hidden.val( newVal );
 				}
 			}
-			
+
 			return this;
 		},
 
@@ -229,7 +229,7 @@
 		 */
 		_fieldChange: function() {
 			var self = this;
-			
+
 			// Clear the timeout for the last character
 			clear_timeout( self.last );
 			var fv = self.$field.val(), len = fv.length,
@@ -239,7 +239,7 @@
 
 			// Update the hidden value with the correct value
 			// depending on cursor position
-			newVal = old.length > cp + 1 && cp > -1 
+			newVal = old.length > cp + 1 && cp > -1
 				? old.substr(0, cp-1) + fv.charAt(cp-1) + old.substr(cp-1)
 				: old + fv.charAt(len - 1);
 			self.$field.data('newVal', newVal);
@@ -314,7 +314,7 @@
 			}
 			return self;
 		},
-		
+
 		/**
 		 * Remove placeholder functionality
 		 * @private
@@ -327,7 +327,7 @@
 			}
 			return this;
 		},
-		
+
 		/**
 		 * Change the id prefix on this field
 		 * @private
@@ -338,11 +338,11 @@
 			this.$field.attr( 'id', cur.replace( prev, value ) );
 			return this;
 		},
-		
+
 		/**
 		 * Gets the current cursor position in a textfield
 		 * to determine where to delete/update a character.
-		 * @return {Number} The index for the position of the cursor. 
+		 * @return {Number} The index for the position of the cursor.
 		 * @private
 		 */
 		_getCursorPosition: function() {
@@ -389,7 +389,7 @@
 				}
 			}
 		},
-		
+
 		/**
 		 * Internally sets options
 		 * @return password123 instance
@@ -409,7 +409,7 @@
 			});
 			return this;
 		},
-		
+
 		/**
 		 * Destroys everything password123 has done and
 		 * sets the original password field back in place
@@ -419,7 +419,7 @@
 			var val = this.$hidden.remove().val();
 			return this.$oldField.val( val ).replaceAll( elem );
 		},
-		
+
 		/**
 		 * Get/set option on an existing password123 instance
 		 * @return The password123 field
@@ -429,7 +429,7 @@
 				return $.extend( {}, this.options ); // Avoids returning direct reference
 			}
 			var options = key;
-			
+
 			if ( typeof key === "string" ) {
 				if ( value === undefined ) {
 					return this.options[ key ];
@@ -444,35 +444,35 @@
 		}
 	};
 	password123._init.prototype = password123;
-	
+
 	// Textchange event with a little extra
 	$.event.special.textchange = {
 		setup: function( data, namespaces ) {
 			$(this).bind('keyup.textchange', $.event.special.textchange.handler);
 			$(this).bind('cut.textchange paste.textchange input.textchange', $.event.special.textchange.delayedHandler);
-		}, 
+		},
 		teardown: function( namespaces ) {
 			$(this).unbind('.textchange');
-		}, 
+		},
 		handler: function( event ) {
 			$.event.special.textchange.triggerIfChanged( $(this) );
-		}, 
+		},
 		delayedHandler: function( event ) {
 			var $element = $(this);
-			
+
 			setTimeout(function() {
 				$.event.special.textchange.triggerIfChanged( $element );
 			}, 25);
-		}, 
+		},
 		triggerIfChanged: function( $element ) {
 			var v = $element.val();
-			
+
 			if ( $element.val() !== $element.data('lastValue') ) {
-				
+
 				// Check if something larger than one letter was pasted into the field
 				var p123 = $.data( $element[0], "password123" );
 				if ( v.length > 1 && v.indexOf( p123.encodedChar ) === -1 ) {
-					
+
 					// If so, we need to save it before it disappears,
 					// but continue with triggering the field change
 					// by taking the last letter off
@@ -485,6 +485,6 @@
 			}
 		}
 	};
-	
+
 
 })(jQuery, this, this.document);
