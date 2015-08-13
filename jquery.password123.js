@@ -144,7 +144,7 @@
 				classes  = self.options.placeholder && place !== undefined && (value === place || value === '') ?
 								field.className + ' ' + self.options.placeholderClass :
 								field.className,
-				attrs = { 'class': classes, 'id': field_id, 'value': value, 'placeholder': self.options.placeholder ? undefined : place },
+				attrs = { 'class': classes, 'id': field_id, 'value': value, 'placeholder': self.options.placeholder ? undefined : place, 'autocomplete': 'off' },
 				standards = [ 'size', 'tabindex', 'readonly', 'disabled', 'maxlength' ];
 
 			// Combine attrs with standard attrs
